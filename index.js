@@ -1,18 +1,43 @@
-// # Setup
+// # Samples
+// Piano samples obtained from https://github.com/nbrosowsky/tonejs-instruments
+// (CC BY 3.0) https://creativecommons.org/licenses/by/3.0/
+var names = ["C0","C#0","D0","D#0","E0","F0","F#0","G0","G#0","A0","A#0","B0",
+             "C1","C#1","D1","D#1","E1","F1","F#1","G1","G#1","A1","A#1","B1",
+             "C2","C#2","D2","D#2","E2","F2","F#2","G2","G#2","A2","A#2","B2",
+             "C3","C#3","D3","D#3","E3","F3","F#3","G3","G#3","A3","A#3","B3",
+             "C4","C#4","D4","D#4","E4","F4","F#4","G4","G#4","A4","A#4","B4",
+             "C5","C#5","D5","D#5","E5","F5","F#5","G5","G#5","A5","A#5","B5",
+             "C6","C#6","D6","D#6","E6","F6","F#6","G6","G#6","A6","A#6","B6",
+             "C7"]
+
+// Setup
 // `synths` is a map of indices to synth objects
 // `freqs` is a map of indices to frequencies for semitones on a piano
 // `indices` is a list of available indices
-// THe code below builds populates a map of synths - one for every key in a piano
+// The code below builds populates a map of synths - one for every key in a piano
 var synths = {};
 var freqs = {};
 var indices = [];
-var lastFreq = 27.5;
-const semiRatio = 1.05946309436;
-for (i = 0; i < 88; i++) {
+for (var i = 0; i < 85; i++) {
+    // internal integer index, with each item rising by one semitone
     indices.push(i);
-    freqs[i] = lastFreq
-    synths[i] = new Tone.Synth().toDestination();
-    lastFreq = semiRatio * lastFreq;
+    // get name of note at index
+    name = names[i]
+    // put into map from index to name
+    freqs[i] = names[i];
+    // get url of sample from name
+    var urls = {};
+    urls[name] = name.replace("#", "s") + ".ogg";
+    // make new sampler
+    const sampler = new Tone.Sampler({
+        urls: urls,
+        volume: -10,
+        baseUrl: "./samples/",
+        curve: "exponential",
+        release: 0.5,
+    });
+    // add sampler to synth object
+    synths[i] = sampler.toDestination();
 };
 
 // # Interface to the synths
@@ -21,7 +46,7 @@ for (i = 0; i < 88; i++) {
 // We can define functions that will play a note at an index, and will stop a note at an index.
 // The functions below will play and stop a note at index i, so we shouldn't have to manually touch `synths` or `freqs` anymore.
 
-function playNote(i) { synths[i].triggerAttack(freqs[i]) };
+function playNote(i) { synths[i].triggerAttackRelease(freqs[i]) };
 function stopNote(i) { synths[i].triggerRelease() };
 
 // and convenience functions
@@ -42,8 +67,8 @@ const dim7 = [0, 6, 9, 15]
 
 // # Key interface
 // The interface should allow:
-// 1. Left hand: specify the root (bvgftr4e3w2q1), inversion down (LShift), inversion up (caps lock) and quality (maj by default, maj7, min, min7, dim, aug)
-// 2. Right hand: bare notes (possibly more than one) (nmjki9o0p-[=]\) and lower (RSHift) and upper ocatve (Enter)
+// 1. Left hand: specify the root, inversion down (LShift), inversion up (caps lock) and quality (maj by default, maj7, min, min7, dim, aug)
+// 2. Right hand: bare notes and lower (RSHift) and upper ocatve (Enter)
 // 3. Key modifier up (u) or down (y) by a semitone
 //
 // In this design, there are:
@@ -69,19 +94,19 @@ const dim7 = [0, 6, 9, 15]
 // This variable declares the effects of each keyboard key.
 const keyMap = {
     // note definitions, relative to the root, in the left hand
-    "KeyB": {type: "playable", hand: "left", offset: 0},
-    "KeyV": {type: "playable", hand: "left", offset: 1},
-    "KeyG": {type: "playable", hand: "left", offset: 2},
-    "KeyF": {type: "playable", hand: "left", offset: 3},
-    "KeyT": {type: "playable", hand: "left", offset: 4},
-    "KeyR": {type: "playable", hand: "left", offset: 5},
-    "Digit4": {type: "playable", hand: "left", offset: 6},
-    "KeyE": {type: "playable", hand: "left", offset: 7},
-    "Digit3": {type: "playable", hand: "left", offset: 8},
-    "KeyW": {type: "playable", hand: "left", offset: 9},
-    "Digit2": {type: "playable", hand: "left", offset: 10},
-    "KeyQ": {type: "playable", hand: "left", offset: 11},
-    "Digit1": {type: "playable", hand: "left", offset: 12},
+    "KeyB": {type: "playable", hand: "left", offset: -5},
+    "KeyV": {type: "playable", hand: "left", offset: -4},
+    "KeyG": {type: "playable", hand: "left", offset: -3},
+    "KeyF": {type: "playable", hand: "left", offset: -2},
+    "KeyT": {type: "playable", hand: "left", offset: -1},
+    "KeyR": {type: "playable", hand: "left", offset: 0},
+    "Digit4": {type: "playable", hand: "left", offset: 1},
+    "KeyE": {type: "playable", hand: "left", offset: 2},
+    "Digit3": {type: "playable", hand: "left", offset: 3},
+    "KeyW": {type: "playable", hand: "left", offset: 4},
+    "KeyQ": {type: "playable", hand: "left", offset: 5},
+    "Digit1": {type: "playable", hand: "left", offset: 6},
+    "Tab": {type: "playable", hand: "left", offset: 7},
 
     // note definitions, relative to the root, in the right hand
     "Slash": {type: "playable", hand: "right", offset: -7},
@@ -107,7 +132,7 @@ const keyMap = {
 
     // modifier definitions, in the left hand
     "ShiftLeft": {type: "modifier", hand: "left", property: "inversion", value: "down"},
-    "CapsLock": {type: "modifier", hand: "left", property: "inversion", value: "up"},
+    "Backquote": {type: "modifier", hand: "left", property: "inversion", value: "up"},
     "KeyA": {type: "modifier", hand: "left", property: "quality", value: "maj7"},
     "KeyZ": {type: "modifier", hand: "left", property: "quality", value: "dom7"},
     "KeyS": {type: "modifier", hand: "left", property: "quality", value: "min"},
@@ -141,14 +166,14 @@ var state = {
     previousRight: null,
     leftModifiers: {inversion: null, quality: null},
     rightModifiers: {octave: null},
-    offset: 15, // set the initial offset to a reasonable C
+    offset: 24, // set the initial offset to a reasonable C
 };
 
 // utility functions for chord editing
 function addOffset(xs, offset) {return xs.map((x) => {return x + offset})};
  // assuming four notes per chord
-function invertUp(xs) { return [xs[0]+12, xs[1], xs[2], xs[3]-12]};
-function invertDown(xs) { return [xs[0], xs[1]-12, xs[2], xs[3]-12]};
+function invertUp(xs) { return [xs[0]+12, xs[1]+12, xs[2], xs[3]]};
+function invertDown(xs) { return [xs[0], xs[1], xs[2]-12, xs[3]-12]};
 
 // calculate notes for the left hand based on state and a keyEffect
 // this function does not mutate any of the global state, only accesses it
