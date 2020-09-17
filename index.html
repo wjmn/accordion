@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musician</title>
+    <style>
+        * { box-sizing: border-box; }
+        html, body {margin: 0, padding: 0;}
+        html {background: black;}
+        body {max-width: 900px; margin: 0 auto; padding: 2rem;}
+        code {color: white; font-family: Iosevka, Consolas, monospace; font-size: 12px}
+    </style>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.53/Tone.js"></script>
+    <script src="./index.js"> </script>
+    <pre><code id="keymap">
+KeyB          left 0
+KeyV          left 1
+KeyG          left 2
+KeyF          left 3
+KeyT          left 4
+KeyR          left 5
+Digit4        left 6
+KeyE          left 7
+Digit3        left 8
+KeyW          left 9
+Digit2        left 10
+KeyQ          left 11
+Digit1        left 12
+
+Slash         right -7
+Semicolon     right -6
+Period        right -5
+KeyL          right -4
+Comma         right -3
+KeyK          right -2
+KeyM          right -1
+KeyN          right 0
+KeyH          right 1
+KeyJ          right 2
+KeyU          right 3
+KeyI          right 4
+KeyO          right 5
+Digit0        right 6
+KeyP          right 7
+Minus         right 8
+BracketLeft   right 9
+Equal         right 10
+BracketRight  right 11
+Backslash     right 12
+
+ShiftLeft     left inversion down
+CapsLock      left inversion up
+KeyA          left quality maj7
+KeyZ          left quality dom7
+KeyS          left quality min
+KeyX          left quality min7
+KeyD          left quality aug
+KeyC          left quality dim
+
+ShiftRight    right octave down
+Enter         right octave up
+
+Digit6        global offset down
+Digit7        global offset up
+
+AltLeft       clear left
+AltRight      clear right
+Space         clear both
+    </code></pre>
+</body>
+
+</html>
