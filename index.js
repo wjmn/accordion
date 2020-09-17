@@ -212,6 +212,19 @@ function calculateRight(keyEffect) {
     return offset;
 }
 
+// function to print to the html page the left hands movements
+function printEffect(hand, keyEffect) {
+    var element = document.getElementById(hand);
+    if (hand == "left") {
+        var inversionString = state.leftModifiers.inversion ? state.leftModifiers.inversion : "";
+        var qualityString = state.leftModifiers.quality ? state.leftModifiers.quality : "maj"
+        element.innerHTML = keyEffect.offset.toString().concat(qualityString, " ", inversionString);
+    } else {
+        var octaveString = state.rightModifiers.octave ? state.rightModifiers.octave : "";
+        element.innerHTML = keyEffect.offset.toString().concat(" ", octaveString);
+    };
+};
+
 // A function which will handle a playable event by mutating the global `state` variable.
 // This function mutates and performs effects!
 function handlePlayable(keyEffect) {
@@ -226,6 +239,8 @@ function handlePlayable(keyEffect) {
             playNotes(newNotes)
             // store in state
             state.previousLeft = newNotes;
+            // print in html window
+            printEffect("left", keyEffect);
             break;
         case "right":
             // stop previous note (handle null)
@@ -236,6 +251,8 @@ function handlePlayable(keyEffect) {
             playNote(newNote);
             // store in state
             state.previousRight = newNote;
+            // print in html window
+            printEffect("right", keyEffect);
             break;
     };
 };

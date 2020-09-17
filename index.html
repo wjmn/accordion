@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Musician</title>
     <style>
-        * { box-sizing: border-box; }
-        html, body {margin: 0, padding: 0;}
-        html {background: black;}
-        body {max-width: 900px; margin: 0 auto; padding: 2rem;}
-        code {color: white; font-family: Iosevka, Consolas, monospace; font-size: 12px}
+     * { box-sizing: border-box; color: white}
+     html, body {margin: 0, padding: 0;}
+     html {background: black;}
+     body {max-width: 900px; margin: 0 auto; padding: 2rem;}
+     #left, #right, code {font-family: Iosevka, Consolas, monospace; font-size: 11px}
+     #show {display: flex; justify-content: space-between;}
     </style>
 </head>
 
@@ -72,6 +73,10 @@ AltLeft       clear left
 AltRight      clear right
 Space         clear both
     </code></pre>
+    <div id="show">
+        <span id="left"></span>
+        <span id="right"></span>
+    </div>
 </body>
 
 </html>
